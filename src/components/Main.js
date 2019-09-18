@@ -15,7 +15,7 @@ export default class Main extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         const api_key = 'xLNiiuCTPYTZA4gHLsiuUk67YYS6K4tz';
-        const url = `http://api.giphy.com/v1/gifs/search?q=${this.state.term}&api_key=${api_key}&limit=1`;
+        const url = `https://api.giphy.com/v1/gifs/search?q=${this.state.term}&api_key=${api_key}&limit=1`;
         fetch(url)
             .then(response => response.json())
             .then(data => 
