@@ -1,39 +1,56 @@
 import React, {useState} from 'react'
 
 const Main = (props) => {
-    //state vars
-    const [term, setTerm] = useState('')
-    const [img, setImg] = useState('')
+    // state vars - check with the api docs:
+    // https://www.boredapi.com/documentation#endpoints-random
+
+    //Se også https://api.publicapis.org/
+    const [activity,setActivity] = useState('')
+    const [type,setType] = useState('')
+    const [participants,setParticipants] = useState('')
+    const [link,setLink] = useState('')
 
     const onChange = (event) => {
-        setTerm(event.target.value)
+        setType(event.target.value)
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const api_key = 'xLNiiuCTPYTZA4gHLsiuUk67YYS6K4tz';
-        const url = `https://api.giphy.com/v1/gifs/search?q=${term}&api_key=${api_key}&limit=1`;
+        const url = `http://www.boredapi.com/api/activity?type=${type}`;
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                setTerm()
-                setImg(data.data[0].images.fixed_height.url)
+                setActivity(data.activity)
+                setParticipants(data.participants)
+                setLink(data.link)
+                console.log(data.link)
             })
             .catch(e => console.log('error', e));
     }
     return (
         <div className="page">
             <form onSubmit={handleSubmit}>
-                <input value={term} onChange={onChange}/>
+                <select onChange={onChange}>
+                    <option value="">Choose activity type</option>
+                    <option value="recreational">Recreational</option>
+                    <option value="education">Education</option>
+                    <option value="relaxation">Relaxation</option>
+                </select>                    
                 <button>Search!</button>
-            </form>
-            <div className="img">
-                {img !== ""
-                    ? <img src={img} alt={term}/>
-                    : ""}
+                </form>
+                <section className="section">
+                    {activity !== ""
+                        ? (
+                            <div className="activity">
+                                <h1>{activity}</h1>
+                                <p>Participants: {participants}</p>
+                                {link!== ""?link:""}
+                            </div>
+                        )
+                        : ""}
+                </section>
             </div>
-        </div>
     )
 }
 
-export default Main;
+export default Main 
