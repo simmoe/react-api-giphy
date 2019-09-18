@@ -1,3 +1,11 @@
+# Simple API with React and giphy
+
+This small project demonstrates how you can use React to fetch and present a single image from the giphy api. You will neeed to head overthere and get an API key first, but that's easy.
+
+<a href="https://simmoe.github.io/react-api-giphy">See a demo here</a>
+
+By the way if you wonder how you can deploy a React project to gihub pages <a href="https://medium.com/the-andela-way/how-to-deploy-your-react-application-to-github-pages-in-less-than-5-minutes-8c5f665a2d2a">check out this cool guide</a> 
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
