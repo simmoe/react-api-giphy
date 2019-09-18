@@ -1,41 +1,39 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-export default class Main extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            term: '',
-            img: ''
-        }
-    }
-    onChange = (event) => {
-        this.setState({term: event.target.value})
+const Main = (props) => {
+    //state vars
+    const [term, setTerm] = useState('')
+    const [img, setImg] = useState('')
+
+    const onChange = (event) => {
+        setTerm(event.target.value)
     }
 
-    handleSubmit = (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         const api_key = 'xLNiiuCTPYTZA4gHLsiuUk67YYS6K4tz';
-        const url = `https://api.giphy.com/v1/gifs/search?q=${this.state.term}&api_key=${api_key}&limit=1`;
+        const url = `https://api.giphy.com/v1/gifs/search?q=${term}&api_key=${api_key}&limit=1`;
         fetch(url)
             .then(response => response.json())
-            .then(data => 
-                this.setState({
-                    term: '', 
-                    img: data.data[0].images.fixed_height.url
-                }, () => console.log(data)))
+            .then(data => {
+                setTerm()
+                setImg(data.data[0].images.fixed_height.url)
+            })
             .catch(e => console.log('error', e));
     }
-    render() {
-        return (
-            <div className="page">
-                <form onSubmit={this.handleSubmit}>
-                    <input value={this.state.term} onChange={this.onChange}/>
-                    <button>Search!</button>
-                </form>
-                <div className="img">
-                    {this.state.img !== "" ? <img src={this.state.img} alt={this.state.term}/> : ""}
-                </div>
+    return (
+        <div className="page">
+            <form onSubmit={handleSubmit}>
+                <input value={term} onChange={onChange}/>
+                <button>Search!</button>
+            </form>
+            <div className="img">
+                {img !== ""
+                    ? <img src={img} alt={term}/>
+                    : ""}
             </div>
-        )
-    }
+        </div>
+    )
 }
+
+export default Main;
