@@ -1,53 +1,40 @@
 import React, {useState} from 'react'
+import Api from './Api'
 
 const Main = (props) => {
     // state vars - check with the api docs:
-    // https://www.boredapi.com/documentation#endpoints-random
+    //Se https://api.publicapis.org/
 
-    //Se også https://api.publicapis.org/
-    const [activity,setActivity] = useState('')
-    const [type,setType] = useState('')
-    const [participants,setParticipants] = useState('')
-    const [link,setLink] = useState('')
+    const [apis,setApis] = useState([])
+    const [term,setTerm] = useState('')
 
     const onChange = (event) => {
-        setType(event.target.value)
+        setTerm(event.target.value)
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const url = `http://www.boredapi.com/api/activity?type=${type}`;
+        const url = `https://api.publicapis.org/entries?title=${term}`;
+        console.log(url)
+
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                setActivity(data.activity)
-                setParticipants(data.participants)
-                setLink(data.link)
-                console.log(data.link)
+                console.log(data.entries!== null)
+                data.entries !== null ? setApis(data.entries) : setApis ([{API:'no results'}])
             })
             .catch(e => console.log('error', e));
     }
     return (
         <div className="page">
             <form onSubmit={handleSubmit}>
-                <select onChange={onChange}>
-                    <option value="">Choose activity type</option>
-                    <option value="recreational">Recreational</option>
-                    <option value="education">Education</option>
-                    <option value="relaxation">Relaxation</option>
-                </select>                    
+                <input onChange={onChange} type="text" name="" placeholder="" />
                 <button>Search!</button>
                 </form>
                 <section className="section">
-                    {activity !== ""
-                        ? (
-                            <div className="activity">
-                                <h1>{activity}</h1>
-                                <p>Participants: {participants}</p>
-                                {link!== ""?link:""}
-                            </div>
-                        )
-                        : ""}
+                    {apis.map((row, rowindex) => {
+                        return (<Api key={rowindex} api={row.API} description={row.Description} link={row.Link}/>)
+                    })}
                 </section>
             </div>
     )
